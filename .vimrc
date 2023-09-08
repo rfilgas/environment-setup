@@ -32,6 +32,8 @@
 "  	User 3: Some combination of the above. If you are fanatical about vim
 "  	there may be something here to grab, but you should also be caught up
 "  	on neovim and might be far past this.
+
+
 " Added IDE motions to classic vim
 " -----------------------------------------
 " - line/block shifting up/down
