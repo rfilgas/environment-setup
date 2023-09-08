@@ -34,7 +34,7 @@
 "  	on neovim and might be far past this.
 
 
-" Added IDE motions to classic vim
+" Added: IDE motions to classic vim
 " -----------------------------------------
 " - line/block shifting up/down
 " - comment lines/blocks with <leader> + /
@@ -42,7 +42,7 @@
 " - Indenting highlighted code with tab and shift tab is supported
 
 
-" Custom Mappings
+" Custom: Mappings
 " --------------------------------------------
 " - Screen splitting with control + movement keys
 " - tn toggles relative vs absolute numbering
