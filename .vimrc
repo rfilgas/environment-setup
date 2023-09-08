@@ -10,7 +10,7 @@
 
 " Notes:
 " - To use backups a directory needs to be made for ~/.vim/backup
-" - The line shifting mapping should be toggled for mac vs unixr.
+" - The line shifting mapping should be toggled for mac vs unix.
 " - <Leader> is currently the space bar.
 "   Intellij does not have visual mode - surround mappings will not work in
 "   ideavim.
