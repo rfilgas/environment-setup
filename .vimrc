@@ -10,10 +10,13 @@
 
 " Notes:
 " - To use backups a directory needs to be made for ~/.vim/backup
-" - The line shifting mapping should be toggled for mac vs unixr.
+" - The line shifting mapping should be toggled for mac vs unix.
 " - <Leader> is currently the space bar.
 "   Intellij does not have visual mode - surround mappings will not work in
 "   ideavim.
+" - Settings in the IDE section should be removed for use in an IDE, there will be conflicts.
+" - The mouse setting in the IDE section for intellij idea should be enabled 
+"   to prevent mode changes when highlighting.
 
 
 " DISCLAIMER:
@@ -32,6 +35,9 @@
 "  	User 3: Some combination of the above. If you are fanatical about vim
 "  	there may be something here to grab, but you should also be caught up
 "  	on neovim and might be far past this.
+
+" Bottom line: modify to suit your needs. 
+
 " Added IDE motions to classic vim
 " -----------------------------------------
 " - line/block shifting up/down
