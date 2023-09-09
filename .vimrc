@@ -313,7 +313,7 @@ inoremap jj <Esc>
 
 " this is for logging a variable with info.log in java. Activate by typing jl in insert
 " mode for 'java log'. || is to know if the var is empty.
-inoremap jl  info.log("var= \|{}\|", );
+inoremap jl  log.info("<var>= \|{}\|", <var>);
 
 " Backspace/delete works now in normal mode like x
 nnoremap <BS> x
