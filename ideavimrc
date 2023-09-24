@@ -1,0 +1,205 @@
+
+" Prefer vim over vi for settings
+ if &compatible
+  set nocompatible
+endif
+
+
+" When the +eval feature is missing, the set command above will be skipped.
+" Use a trick to reset compatible only when the +eval feature is missing.
+silent! while 0
+  set nocompatible
+silent! endwhile
+
+" Show @@@ in the last line if it is truncated.
+set display=truncate
+
+" Show a few lines of context around the cursor.  Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+
+" Only do this part when Vim was compiled with the +eval feature.
+if 1
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  " Revert with ":filetype off".
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that you can revert them with:
+  " ":autocmd! vimStartup"
+  augroup vimStartup
+    autocmd!
+
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid, when inside an event handler
+    " (happens when dropping a file on gvim), for a commit or rebase message
+    " (likely a different one than last time), and when using xxd(1) to filter
+    " and edit binary files (it transforms input files back and forth, causing
+    " them to have dual nature, so to speak)
+    autocmd BufReadPost *
+      \ let line = line("'\"")
+      \ | if line >= 1 && line <= line("$") && &filetype !~# 'commit'
+      \      && index(['xxd', 'gitrebase'], &filetype) == -1
+      \ |   execute "normal! g`\""
+      \ | endif
+
+  augroup END
+endif
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+" Revert with: ":delcommand DiffOrig".
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+		  \ | wincmd p | diffthis
+endif
+" END Defaults:
+
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+" ============== NEXT | BASICS =============================================
+" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+" color settings (if terminal/gui supports it)
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  color desert
+  set hlsearch
+  set incsearch
+  let c_comment_strings=1
+endif
+
+
+" If Vim version is equal to or greater than 7.3 enable undofile.
+" This allows you to undo changes to a file even after saving it.
+if version >= 703
+    set undodir=~/.vim/backup
+    set undofile
+    set undoreload=10000
+endif
+
+" start in normal mode so leaving "insert" makes sense.
+autocmd VimEnter * silent! :normal
+
+" ----style---------
+set background=dark
+hi CursorLine term=bold cterm=bold guibg=Grey40 ctermbg=none ctermfg=none
+
+
+" ----general----
+set lazyredraw          " no redraws in macros
+set confirm             " get a dialog when :q, :w, or :wq fails
+set nobackup            " no backup~ files.
+set viminfo='20,\"500   " remember copy registers after quitting in the .viminfo file -- 20 jump links, regs up to 500 lines'
+set hidden              " make a buffer hidden while editing another one.
+set history=200			" keep 200 lines of command line history
+set ttimeout			" time out for key codes
+set ttimeoutlen=100		" wait up to 100ms after Esc for special key
+
+
+" ----input----
+set mouse=n,v
+set selectmode=mouse,ideaselection
+set esckeys				 " map missed escape sequences (enables keypad keys)
+
+
+" ----notification----
+set title				" add file name at top
+set showmode			" show mode in status bar
+set showcmd				" show commands in status bar
+set visualbell			" no sound on error, just flashing
+set laststatus=2		" use 2 lines for the status bar
+
+
+" ----search----
+set showmatch 			" show matching bracket
+
+
+"  ----cases----
+set ignorecase 			" case insensitive searching
+set smartcase 			" become case insensitive for upper case searches
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set nostartofline
+set laststatus=2 		" always display status
+set confirm
+
+" go to the class definition
+nmap gh gg<Action>(MethodDown)mxz<CR>5<C-y>`X
+
+nmap [[ <Action>(MethodUp)
+nmap ]] <Action>(MethodDown)
+
+" ----lines----
+set ruler 		" add ruler
+set nowrap 		" don't wrap lines
+set cursorline  " higlights the current line
+set number 		" line numbers
+
+" *********************
+" *****Keymapping******
+" *********************
+"
+" Map leader defines the initializer for custom keymappings
+let mapleader = "\<space>"
+
+" Map leader c to copy to clipboard
+vnoremap <F2> :w !pbcopy<CR><CR>
+
+" **** Disabled ****
+" no closing vim with control z - commonly used for undo and can corrupt files.
+nnoremap <c-z> <nop>
+
+
+" Typing tn toggles relative vs absolute numbers.
+nnoremap tn :call ToggleNumber()<CR>
+function! ToggleNumber()
+  if &number || &relativenumber
+    set invrelativenumber
+  else
+    set relativenumber
+  endif
+endfunction
+
+
+" ********* General Additions *******
+"
+" Yank from cursor to the end of line.
+nnoremap Y y$
+
+" this is for logging a variable with info.log in java. Activate by typing jl in insert
+" mode for 'java log'. || is to know if the var is empty.
+inoremap jl  log.info("<name> = \|{}\|", <var>);
+
+" Backspace/delete works in normal mode
+nnoremap <BS> X
+
+
+" SHIFTING WORKS EXCEPT FOR NORMAL MODE SHIFT
+" Use visual mode or toggle out of ideavim.
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+
+" keeping if tabbing changes are needed
+" tab to indent the selected text
+" nmap <Tab> >>
+" nmap <Tab> >gv
+" 
+" vmap <Tab> >>
+" vmap <Tab> >gv
+" 
+" nmap <Tab> >>V
+" nmap <S-Tab> <<V
+" 
+" 
+" vmap <S-Tab> <<
+" vmap <S-Tab> <gv
+" 
+" nmap <S-Tab> <<
+" nmap <S-Tab> <gv
+" 
