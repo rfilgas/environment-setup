@@ -105,6 +105,7 @@ set selectmode=mouse,ideaselection
 set esckeys				 " map missed escape sequences (enables keypad keys)
 
 
+
 " ----notification----
 set title				" add file name at top
 set showmode			" show mode in status bar
@@ -121,6 +122,10 @@ set showmatch 			" show matching bracket
 set ignorecase 			" case insensitive searching
 set smartcase 			" become case insensitive for upper case searches
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
+
+" normal backspace behavior in normal mode. Ignores line ends.
+nnoremap <expr> <Backspace> col('.') == 1 ? 'kgJ' : 'X'
+
 set nostartofline
 set laststatus=2 		" always display status
 set confirm
@@ -172,8 +177,10 @@ nnoremap Y y$
 " mode for 'java log'. || is to know if the var is empty.
 inoremap jl  log.info("<name> = \|{}\|", <var>);
 
-" Backspace/delete works in normal mode
-nnoremap <BS> X
+
+" l and h ignore line ends
+:set whichwrap+=>,l
+:set whichwrap+=<,h
 
 
 " SHIFTING WORKS EXCEPT FOR NORMAL MODE SHIFT
